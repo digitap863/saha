@@ -81,6 +81,8 @@ export default function SustainedBanner() {
         ref={cardRef}
         className="bg-[#487361] rounded-xs px-8 py-10 sm:px-12 sm:py-14 lg:px-16 lg:py-16 text-[#FAFBF8] shadow-xs"
       >
+         {/* Subtle background texture */}
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF9F5_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
           {/* Left Column: Premise Headline in Tightly Tracked Neo-grotesque Sans */}
           <div className="lg:col-span-5 space-y-3">
@@ -101,7 +103,7 @@ export default function SustainedBanner() {
           {/* Right Column: Key Statement in High-contrast Serif & Description */}
           <div
             ref={dividerRef}
-            className="lg:col-span-7 space-y-5 lg:pl-4 lg:border-l lg:border-[#5f8f7c]/50"
+            className="lg:col-span-7 space-y-5 lg:pl-4 lg:border-l lg:border-[#5f8f7c]"
           >
             <p
               ref={quoteRef}
