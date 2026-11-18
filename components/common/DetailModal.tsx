@@ -19,7 +19,7 @@ export default function DetailModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-[#14170D]/70 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl bg-[#FAF9F5] border border-[#DDD6C5] shadow-2xl p-6 sm:p-10 my-8 rounded-xs text-[#22251B]">
+      <div className="relative w-full max-w-2xl bg-saha-bg border border-[#DDD6C5] shadow-2xl p-6 sm:p-10 my-8 rounded-xs text-[#22251B]">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -32,7 +32,7 @@ export default function DetailModal({
         {/* Content */}
         <div className="space-y-6">
           {/* Category Tag */}
-          <div className="text-[11px] font-medium tracking-[0.3em] text-[#B59828] uppercase">
+          <div className="text-[11px] font-medium tracking-[0.3em] text-saha-gold uppercase">
             {pillar.number} / {pillar.category}
           </div>
 
@@ -50,7 +50,7 @@ export default function DetailModal({
 
           {/* Summary */}
           {pillar.fullDetails?.summary && (
-            <p className="text-sm sm:text-base text-[#464B3B] leading-relaxed border-l-2 border-[#B59828]/50 pl-4 py-1">
+            <p className="text-sm sm:text-base text-[#464B3B] leading-relaxed border-l-2 border-saha-gold/50 pl-4 py-1">
               {pillar.fullDetails.summary}
             </p>
           )}
@@ -64,7 +64,7 @@ export default function DetailModal({
               <ul className="space-y-2.5">
                 {pillar.fullDetails.highlights.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-sm text-[#383C2F]">
-                    <span className="w-4 h-4 rounded-full bg-[#3F4C19]/10 text-[#3F4C19] flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-4 h-4 rounded-full bg-[#3F4C19]/10 text-saha-olive flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3 h-3" />
                     </span>
                     <span>{item}</span>

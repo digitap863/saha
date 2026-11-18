@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export interface PillarData {
@@ -8,15 +9,7 @@ export interface PillarData {
   title: string;
   description: string;
   buttonLabel: string;
-  fullDetails?: {
-    subtitle: string;
-    highlights: string[];
-    summary: string;
-  };
-}
-
-interface PillarsSectionProps {
-  onSelectPillar: (pillar: PillarData) => void;
+  href: string;
 }
 
 export const PILLARS_DATA: PillarData[] = [
@@ -27,17 +20,7 @@ export const PILLARS_DATA: PillarData[] = [
     title: "Why recovery matters.",
     description: "The thinking behind a more deliberate relationship with recovery.",
     buttonLabel: "EXPLORE PHILOSOPHY",
-    fullDetails: {
-      subtitle: "The Science & Architecture of Strategic Rest",
-      highlights: [
-        "Neuro-endocrine recalibration after prolonged adrenaline and cortisol elevation",
-        "Cognitive decluttering through sensory reduction and environmental stillness",
-        "Somatic release of chronic physical tension stored during high-stakes decision making",
-        "Rebuilding genuine biological resilience rather than superficial relaxation",
-      ],
-      summary:
-        "High performance without deliberate physiological down-regulation leads to cognitive narrowing, emotional fatigue, and compromised judgement. Sahā approaches recovery as a core leadership competency—an active, structured discipline that sustains enduring excellence.",
-    },
+    href: "/philosophy",
   },
   {
     id: "experience",
@@ -46,42 +29,22 @@ export const PILLARS_DATA: PillarData[] = [
     title: "What the time holds.",
     description: "The practices, rhythm and personal attention that shape the experience.",
     buttonLabel: "EXPLORE EXPERIENCE",
-    fullDetails: {
-      subtitle: "A Quiet, Unrushed Cadence of Restoration",
-      highlights: [
-        "1-on-1 diagnostic consultation assessing sleep architecture, nervous system load, and daily stressors",
-        "Personalized daily rhythm: restorative movement, breathwork, thermal therapy, and forest immersion",
-        "Nutritious, organic anti-inflammatory dining crafted to balance blood sugar and support deep cellular repair",
-        "Zero digital obligation—safe, discreet space to unplug without professional friction",
-      ],
-      summary:
-        "Every stay is custom tailored. There are no mandatory group circles or rigid itineraries. You are met with uncompromising privacy, exquisite natural surroundings, and deeply knowledgeable practitioners dedicated to your holistic replenishment.",
-    },
+    href: "/experience",
   },
   {
-    id: "participation",
+    id: "who-its-for",
     number: "03",
     category: "PARTICIPATION",
     title: "Who it is designed for.",
     description: "For people carrying significant professional and personal responsibility.",
     buttonLabel: "WHO IT'S FOR",
-    fullDetails: {
-      subtitle: "Leaders Who Carry the Weight of Consequences",
-      highlights: [
-        "Founders, chief executives, and partners navigating critical inflection points or exits",
-        "Senior policymakers, surgeons, and professionals operating under unrelenting accountability",
-        "High performers experiencing subtle cognitive fatigue, diminished sleep quality, or chronic overload",
-        "Discreet individuals seeking sanctuary without the fanfare of conventional luxury commercial spas",
-      ],
-      summary:
-        "Sahā is deliberately intimate, hosting only a strictly limited cohort at any one time. This ensures absolute confidentiality, quietude, and personalized care for individuals whose decisions affect many lives.",
-    },
+    href: "/who-its-for",
   },
 ];
 
-export default function PillarsSection({ onSelectPillar }: PillarsSectionProps) {
+export default function PillarsSection() {
   return (
-    <section id="experience" className="py-20 lg:py-28 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+    <section id="experience" className="py-10 lg:py-20 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
       {/* Section Header */}
       <div className="text-center mb-16 lg:mb-20">
         <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[2.75rem] text-[#24281B] font-normal tracking-tight">
@@ -115,15 +78,19 @@ export default function PillarsSection({ onSelectPillar }: PillarsSectionProps) 
               </p>
             </div>
 
-            {/* Action Button */}
+            {/* Action Link: Configured for future page routes, currently prevents navigation */}
             <div className="pt-8">
-              <button
-                onClick={() => onSelectPillar(pillar)}
+              <Link
+                href={pillar.href}
+                onClick={(e) => {
+                  // Currently no redirection needed until dedicated pages are created
+                  e.preventDefault();
+                }}
                 className="w-full py-3.5 px-4 bg-[#3E4A19] hover:bg-[#313C12] text-[#FAF9F5] text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-sm"
               >
                 <span>{pillar.buttonLabel}</span>
                 <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
+              </Link>
             </div>
           </div>
         ))}
@@ -131,4 +98,3 @@ export default function PillarsSection({ onSelectPillar }: PillarsSectionProps) 
     </section>
   );
 }
-

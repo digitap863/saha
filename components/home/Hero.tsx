@@ -14,7 +14,8 @@ export default function Hero() {
   const subhead2Ref = useRef<HTMLDivElement>(null);
 
   // Desktop/Tablet image refs:
-  // imageContainerRef has z-[60] so it sits on TOP of the navbar (z-50) when scroll back happens
+  // imageContainerRef is anchored firmly to `bottom-0 right-0` so the silhouette
+  // ALWAYS sits on the bottom of the screen across fullscreen, normal screen, and all aspect ratios.
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -55,14 +56,14 @@ export default function Hero() {
       );
     }
 
-    // Initial entrance zoom-in
+    // Initial entrance zoom-in: anchored strictly to `right bottom`
     if (imageRef.current) {
       gsap.fromTo(
         imageRef.current,
         {
-          scale: 1.22,
+          scale: 1.18,
           opacity: 0,
-          transformOrigin: "bottom right",
+          transformOrigin: "100% 100%",
         },
         {
           scale: 1,
@@ -77,9 +78,9 @@ export default function Hero() {
       gsap.fromTo(
         mobileImageRef.current,
         {
-          scale: 1.15,
+          scale: 1.12,
           opacity: 0,
-          transformOrigin: "bottom right",
+          transformOrigin: "100% 100%",
         },
         {
           scale: 1,
@@ -91,7 +92,7 @@ export default function Hero() {
     }
 
     // 2. Desktop Scroll Animation:
-    // Pinned zoom out + ensure image sits on top of navbar when scroll back happens
+    // Pinned zoom out + ensure image stays firmly on the bottom of the screen
     mm.add("(min-width: 768px)", () => {
       const scrollTl = gsap.timeline({
         scrollTrigger: {
@@ -116,14 +117,12 @@ export default function Hero() {
           },
           onUpdate: (self) => {
             if (imageContainerRef.current) {
-              // If scrolling back up (direction === -1), keep image on top of navbar
               if (self.direction === -1) {
                 imageContainerRef.current.style.zIndex = "60";
               }
             }
           },
           onLeave: () => {
-            // Once scrolled fully past hero, reset z-index so it doesn't block lower sections
             if (imageContainerRef.current) {
               imageContainerRef.current.style.zIndex = "10";
             }
@@ -131,13 +130,13 @@ export default function Hero() {
         },
       });
 
-      // Zoom out image slightly on scroll
+      // Zoom out image slightly on scroll, keeping bottom strictly anchored
       if (imageContainerRef.current) {
         scrollTl.to(
           imageContainerRef.current,
           {
-            scale: 0.86,
-            transformOrigin: "bottom right",
+            scale: 0.88,
+            transformOrigin: "100% 100%",
             ease: "power1.inOut",
           },
           0
@@ -162,8 +161,8 @@ export default function Hero() {
     mm.add("(max-width: 767px)", () => {
       if (mobileContainerRef.current) {
         gsap.to(mobileContainerRef.current, {
-          scale: 0.9,
-          transformOrigin: "bottom right",
+          scale: 0.92,
+          transformOrigin: "100% 100%",
           ease: "none",
           scrollTrigger: {
             trigger: heroRef.current,
@@ -182,7 +181,7 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative w-full overflow-x-clip bg-white min-h-[520px] sm:min-h-[600px] md:min-h-[660px] lg:min-h-[720px] xl:min-h-[760px] flex items-center pt-24 sm:pt-28 md:pt-0"
+      className="relative w-full overflow-x-clip bg-white min-h-screen h-screen min-h-[100dvh] h-[100dvh] flex items-center pt-20 md:pt-0"
     >
       {/* Left Content Container */}
       <div
@@ -218,35 +217,34 @@ export default function Hero() {
       </div>
 
       {/* Right Silhouette Image - Desktop/Tablet:
-          Configured with `z-[60]` (higher than Navbar's z-50) so when scroll back happens,
-          the head and silhouette are rendered ON TOP of the navbar.
-          `pointer-events-none` guarantees navbar links stay 100% interactive. */}
+          Anchored strictly to `bottom-0 right-0` with `translate-y-[6px]` and `h-[100dvh]`
+          so the shoulders ALWAYS sit firmly on the bottom of the screen with ZERO white gap. */}
       <div
         ref={imageContainerRef}
-        className="hidden md:flex absolute right-0 top-0 bottom-0 h-full w-auto items-end justify-end pointer-events-none select-none z-[60] will-change-transform"
-        style={{ transformOrigin: "bottom right" }}
+        className="hidden md:flex absolute right-0 bottom-0 h-full max-h-[100dvh] w-auto items-end justify-end pointer-events-none select-none z-[60] will-change-transform translate-y-[6px]"
+        style={{ transformOrigin: "100% 100%" }}
       >
         <img
           ref={imageRef}
           src="/678.png"
           alt="Sahā - Golden Rim-Lit Silhouette"
-          className="h-full w-auto max-w-none object-contain select-none will-change-transform"
-          style={{ objectPosition: "right bottom", transformOrigin: "bottom right" }}
+          className="h-full max-h-[100dvh] w-auto max-w-none block select-none will-change-transform pointer-events-none"
+          style={{ transformOrigin: "100% 100%" }}
         />
       </div>
 
-      {/* Right Silhouette Image - Mobile */}
+      {/* Right Silhouette Image - Mobile: Anchored to bottom-right */}
       <div
         ref={mobileContainerRef}
-        className="flex md:hidden w-full justify-end px-4 pb-6 mt-4 pointer-events-none select-none will-change-transform"
-        style={{ transformOrigin: "bottom right" }}
+        className="flex md:hidden absolute right-0 bottom-0 w-full justify-end pointer-events-none select-none will-change-transform translate-y-[4px]"
+        style={{ transformOrigin: "100% 100%" }}
       >
         <img
           ref={mobileImageRef}
-          src="/Golden Rim-Lit Bearded Silhouette.png"
+          src="/678.png"
           alt="Sahā - Golden Rim-Lit Silhouette"
-          className="w-full max-w-95 h-auto object-contain will-change-transform"
-          style={{ objectPosition: "right bottom" }}
+          className="w-auto h-[55vh] max-h-[460px] max-w-none block select-none will-change-transform"
+          style={{ transformOrigin: "100% 100%" }}
         />
       </div>
     </section>

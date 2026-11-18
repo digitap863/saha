@@ -8,7 +8,6 @@ import {
   Footer,
   SmoothScroll,
   EnquiryModal,
-  DetailModal,
 } from "@/components/common";
 
 // Home Page Specific Components
@@ -17,18 +16,15 @@ import {
   PerspectiveSection,
   ManifestoBanner,
   PillarsSection,
-  SettingSection,
   ConversationCta,
-  type PillarData,
 } from "@/components/home";
 
 export default function Home() {
   const [enquireOpen, setEnquireOpen] = useState(false);
-  const [selectedPillar, setSelectedPillar] = useState<PillarData | null>(null);
 
   return (
     <SmoothScroll>
-      <div className="min-h-screen flex flex-col bg-white text-[#22251B] selection:bg-[#B59828]/20">
+      <div className="min-h-screen flex flex-col bg-white text-[#22251B] selection:bg-saha-gold/20">
         {/* Common Navigation */}
         <Navbar onOpenEnquire={() => setEnquireOpen(true)} />
 
@@ -45,30 +41,21 @@ export default function Home() {
 
           {/* 4. Three Pillars Cards Section (01 Philosophy, 02 Experience, 03 Participation) */}
           <div id="who-its-for">
-            <PillarsSection onSelectPillar={(pillar) => setSelectedPillar(pillar)} />
+            <PillarsSection />
           </div>
 
-          {/* 5. The Setting Sanctuary Section */}
-          <SettingSection />
-
-          {/* 6. Private Conversation CTA Banner */}
+          {/* 5. Private Conversation CTA Banner */}
           <ConversationCta onOpenEnquire={() => setEnquireOpen(true)} />
         </main>
 
         {/* Common Footer & Panoramic Landscape */}
         <Footer onOpenEnquire={() => setEnquireOpen(true)} />
 
-        {/* Interactive Modals */}
-        <EnquiryModal
+        {/* Interactive Admissions Modal */}
+        {/* <EnquiryModal
           isOpen={enquireOpen}
           onClose={() => setEnquireOpen(false)}
-        />
-
-        <DetailModal
-          pillar={selectedPillar}
-          onClose={() => setSelectedPillar(null)}
-          onOpenEnquire={() => setEnquireOpen(true)}
-        />
+        /> */}
       </div>
     </SmoothScroll>
   );
