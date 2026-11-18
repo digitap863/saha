@@ -11,7 +11,8 @@ export default function ConversationCta({ onOpenEnquire }: ConversationCtaProps)
       <div className="bg-[#414E1A] text-[#FAF9F5] p-8 sm:p-12 lg:p-16 rounded-xs relative overflow-hidden shadow-lg">
         {/* Decorative soft light gradient */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#FAF9F5]/5 rounded-full blur-3xl pointer-events-none" />
-
+ {/* Subtle background texture */}
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF9F5_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center relative z-10">
           {/* Left Column */}
           <div className="lg:col-span-7 space-y-4">
