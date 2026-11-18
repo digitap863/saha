@@ -12,18 +12,18 @@ export default function Logo({
   className = "",
 }: LogoProps) {
   const isLight = variant === "light";
+  const logoSrc = isLight ? "/logo_bg_removed.png" : "/logo_black.png";
 
   return (
     <div className={`flex items-center select-none ${className}`}>
       <Image
-        src="/logo.png"
-        alt="Sahā"
-        width={1227}
-        height={806}
+        src={logoSrc}
+        alt="Sahā - Breathe · Be · Balance"
+        width={1024}
+        height={672}
         priority
-        className={`h-9 sm:h-10 md:h-11 w-auto object-contain transition-opacity ${
-          isLight ? "invert brightness-200" : ""
-        }`}
+        unoptimized
+        className="h-10 sm:h-11 md:h-12 w-auto object-contain transition-opacity"
       />
     </div>
   );
