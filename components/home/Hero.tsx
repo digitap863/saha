@@ -9,8 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subhead1Ref = useRef<HTMLDivElement>(null);
+  const headlineLine1Ref = useRef<HTMLSpanElement>(null);
+  const headlineLine2Ref = useRef<HTMLSpanElement>(null);
+  const subhead1Line1Ref = useRef<HTMLSpanElement>(null);
+  const subhead1Line2Ref = useRef<HTMLSpanElement>(null);
   const subhead2Ref = useRef<HTMLDivElement>(null);
 
   // Desktop/Tablet image refs:
@@ -26,37 +28,72 @@ export default function Hero() {
   useEffect(() => {
     const mm = gsap.matchMedia(heroRef);
 
-    // 1. Entrance animation on page load
+    // 1. Entrance animation on page load: Luxury masked reveal & deblur
     const entranceTl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    if (headlineRef.current) {
+    // Headline Masked Line Reveal with subtle 3D tilt
+    const headlineLines = [headlineLine1Ref.current, headlineLine2Ref.current].filter(Boolean);
+    if (headlineLines.length > 0) {
       entranceTl.fromTo(
-        headlineRef.current,
-        { y: 35, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.3 },
+        headlineLines,
+        {
+          y: "125%",
+          opacity: 0,
+          rotateX: -14,
+        },
+        {
+          y: "0%",
+          opacity: 1,
+          rotateX: 0,
+          duration: 1.35,
+          stagger: 0.15,
+          ease: "power4.out",
+        },
         0.15
       );
     }
 
-    if (subhead1Ref.current) {
+    // Serif Subheading with subtle deblur and slide
+    const subheadLines = [subhead1Line1Ref.current, subhead1Line2Ref.current].filter(Boolean);
+    if (subheadLines.length > 0) {
       entranceTl.fromTo(
-        subhead1Ref.current,
-        { y: 22, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.1 },
-        0.4
+        subheadLines,
+        {
+          y: "110%",
+          opacity: 0,
+          filter: "blur(3px)",
+        },
+        {
+          y: "0%",
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1.15,
+          stagger: 0.12,
+          ease: "power3.out",
+        },
+        0.5
       );
     }
 
+    // Sans accent note
     if (subhead2Ref.current) {
       entranceTl.fromTo(
         subhead2Ref.current,
-        { y: 15, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9 },
-        0.6
+        {
+          y: 20,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.95,
+          ease: "power3.out",
+        },
+        0.85
       );
     }
 
-    // Initial entrance zoom-in: anchored strictly to `right bottom`
+    // Initial entrance zoom-in for desktop image: anchored strictly to `right bottom`
     if (imageRef.current) {
       gsap.fromTo(
         imageRef.current,
@@ -74,6 +111,7 @@ export default function Hero() {
       );
     }
 
+    // Initial entrance zoom-in for mobile image
     if (mobileImageRef.current) {
       gsap.fromTo(
         mobileImageRef.current,
@@ -109,7 +147,6 @@ export default function Hero() {
               imageContainerRef.current.style.zIndex = "60";
             }
           },
-          // When user scrolls back up into hero, elevate image over navbar
           onEnterBack: () => {
             if (imageContainerRef.current) {
               imageContainerRef.current.style.zIndex = "60";
@@ -157,11 +194,27 @@ export default function Hero() {
       }
     });
 
-    // 3. Mobile Scroll Animation
+    // 3. Mobile Scroll Animation: Fluid text parallax & silhouette recession
     mm.add("(max-width: 767px)", () => {
+      if (textContentRef.current) {
+        gsap.to(textContentRef.current, {
+          y: -40,
+          opacity: 0.3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: "top top",
+            end: "bottom 30%",
+            scrub: 1,
+          },
+        });
+      }
+
       if (mobileContainerRef.current) {
         gsap.to(mobileContainerRef.current, {
           scale: 0.92,
+          y: 20,
+          opacity: 0.6,
           transformOrigin: "100% 100%",
           ease: "none",
           scrollTrigger: {
@@ -181,35 +234,57 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative w-full overflow-x-clip bg-white min-h-screen h-screen min-h-[100dvh] h-[100dvh] flex items-center pt-20 md:pt-0"
+      className="relative w-full overflow-x-clip bg-white min-h-[100dvh] h-[100dvh] flex items-start md:items-center pt-20 sm:pt-24 md:pt-0"
     >
       {/* Left Content Container */}
       <div
         ref={textContentRef}
-        className="w-full max-w-[1500px] mx-auto px-6 sm:px-12 md:px-16 lg:px-20 xl:px-24 py-12 md:py-16 lg:py-24 z-10 relative will-change-transform"
+        className="w-full max-w-375 mx-auto px-6 sm:px-12 md:px-16 lg:px-20 xl:px-24 pt-4 sm:pt-6 md:py-16 lg:py-24 z-20 relative will-change-transform"
       >
-        <div className="max-w-xl md:max-w-2xl flex flex-col justify-center space-y-6 sm:space-y-8">
-          {/* Main Headline */}
-          <h1
-            ref={headlineRef}
-            className="font-sans text-[2.75rem] sm:text-[3.75rem] md:text-[4.5rem] lg:text-[5.25rem] leading-[1.04] tracking-[-0.015em] text-[#a5a013] font-normal"
-          >
-            Recover from <br />
-            the life you built.
+        <div className="max-w-xl md:max-w-2xl flex flex-col justify-start md:justify-center space-y-4 sm:space-y-6 md:space-y-8">
+          {/* Main Headline with Masked Line Reveal */}
+          <h1 className="font-sans text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.25rem] leading-[1.04] tracking-[-0.02em] text-[#a5a013] font-normal">
+            <span className="block overflow-hidden py-1">
+              <span
+                ref={headlineLine1Ref}
+                className="inline-block transform-gpu will-change-transform"
+              >
+                Recover from
+              </span>
+            </span>
+            <span className="block overflow-hidden py-1">
+              <span
+                ref={headlineLine2Ref}
+                className="inline-block transform-gpu will-change-transform"
+              >
+                the life you built.
+              </span>
+            </span>
           </h1>
 
-          {/* First Paragraph: Serif Subheading */}
-          <div
-            ref={subhead1Ref}
-            className="font-serif-luxury text-xl sm:text-2xl md:text-[1.65rem] leading-[1.35] text-[#202523] font-normal"
-          >
-            <p>For people whose work demands sustained focus,</p>
-            <p>sound judgement and responsibility.</p>
+          {/* First Paragraph: Serif Subheading with Masked Staggered Rise */}
+          <div className="font-serif-luxury text-lg sm:text-xl md:text-[1.65rem] leading-[1.3] text-[#202523] font-normal">
+            <p className="block overflow-hidden py-0.5">
+              <span
+                ref={subhead1Line1Ref}
+                className="inline-block transform-gpu will-change-transform"
+              >
+                For people whose work demands sustained focus,
+              </span>
+            </p>
+            <p className="block overflow-hidden py-0.5">
+              <span
+                ref={subhead1Line2Ref}
+                className="inline-block transform-gpu will-change-transform"
+              >
+                sound judgement and responsibility.
+              </span>
+            </p>
           </div>
 
           {/* Second Paragraph: Sans Accent Note */}
-          <div ref={subhead2Ref} className="pt-2">
-            <p className="font-sans text-sm sm:text-[0.95rem] text-[#4d4c21] font-normal tracking-normal">
+          <div ref={subhead2Ref} className="pt-1 sm:pt-2">
+            <p className="font-sans text-xs sm:text-sm md:text-[0.95rem] text-[#4d4c21] font-normal tracking-normal">
               A private recovery experience for high performers.
             </p>
           </div>
@@ -236,14 +311,14 @@ export default function Hero() {
       {/* Right Silhouette Image - Mobile: Anchored to bottom-right */}
       <div
         ref={mobileContainerRef}
-        className="flex md:hidden absolute right-0 bottom-0 w-full justify-end pointer-events-none select-none will-change-transform translate-y-[4px]"
+        className="flex md:hidden absolute right-0 bottom-0 w-full justify-end pointer-events-none select-none will-change-transform translate-y-[4px] z-10"
         style={{ transformOrigin: "100% 100%" }}
       >
         <img
           ref={mobileImageRef}
           src="/678.png"
           alt="Sahā - Golden Rim-Lit Silhouette"
-          className="w-auto h-[55vh] max-h-[460px] max-w-none block select-none will-change-transform"
+          className="w-auto h-[48vh] sm:h-[52vh] max-h-[420px] max-w-none block select-none will-change-transform"
           style={{ transformOrigin: "100% 100%" }}
         />
       </div>

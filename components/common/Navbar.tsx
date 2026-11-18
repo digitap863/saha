@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import Logo from "./Logo";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 
@@ -21,11 +22,11 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
   }, []);
 
   const navLinks = [
-    { label: "HOME", href: "#home" },
-    { label: "PHILOSOPHY", href: "#philosophy" },
-    { label: "EXPERIENCE", href: "#experience" },
-    { label: "WHO IT'S FOR", href: "#who-its-for" },
-    { label: "THE SETTING", href: "#setting" },
+    { label: "HOME", href: "/" },
+    { label: "PHILOSOPHY", href: "/philosophy" },
+    { label: "EXPERIENCE", href: "/#experience" },
+    { label: "WHO IT'S FOR", href: "/#who-its-for" },
+    { label: "THE SETTING", href: "/#setting" },
   ];
 
   return (
@@ -38,24 +39,24 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between">
         {/* Brand Logo */}
-        <a
-          href="#home"
+        <Link
+          href="/"
           className="flex items-center gap-2 group focus:outline-hidden"
           aria-label="Sahā Home"
         >
           <Logo />
-        </a>
+        </Link>
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-9">
           {navLinks.map((item) => (
-            <a
+            <Link
               key={item.label}
               href={item.href}
               className="text-[11px] font-medium tracking-[0.2em] text-[#4F5244] hover:text-[#B59828] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-[#B59828] hover:after:w-full after:transition-all after:duration-300"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -94,14 +95,14 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
         <div className="md:hidden bg-[#FAF9F5] border-b border-[#E8E4D5] px-6 py-6 shadow-xl animate-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col space-y-4">
             {navLinks.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-xs font-medium tracking-[0.2em] text-[#4F5244] hover:text-[#B59828] py-2 border-b border-[#ECE7DA]"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <div className="pt-2">
               <button

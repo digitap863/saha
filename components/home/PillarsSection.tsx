@@ -1,97 +1,138 @@
-import React from "react";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+"use client";
 
-export interface PillarData {
+import React, { useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export interface PillarItem {
   id: string;
-  number: string;
-  category: string;
   title: string;
   description: string;
-  buttonLabel: string;
-  href: string;
 }
 
-export const PILLARS_DATA: PillarData[] = [
+export type PillarData = PillarItem;
+
+export const PILLARS_ITEMS: PillarItem[] = [
   {
-    id: "philosophy",
-    number: "01",
-    category: "PHILOSOPHY",
-    title: "Why recovery matters.",
-    description: "The thinking behind a more deliberate relationship with recovery.",
-    buttonLabel: "EXPLORE PHILOSOPHY",
-    href: "/philosophy",
+    id: "privacy",
+    title: "Privacy, without compromise.",
+    description: "A private setting that respects personal space and discretion.",
   },
   {
-    id: "experience",
-    number: "02",
-    category: "EXPERIENCE",
-    title: "What the time holds.",
-    description: "The practices, rhythm and personal attention that shape the experience.",
-    buttonLabel: "EXPLORE EXPERIENCE",
-    href: "/experience",
+    id: "personal-attention",
+    title: "Personal attention, not standard packages.",
+    description: "Every experience is shaped around individual preferences, needs and pace.",
   },
   {
-    id: "who-its-for",
-    number: "03",
-    category: "PARTICIPATION",
-    title: "Who it is designed for.",
-    description: "For people carrying significant professional and personal responsibility.",
-    buttonLabel: "WHO IT'S FOR",
-    href: "/who-its-for",
+    id: "grounded-experience",
+    title: "Grounded in Experience. Guided by Expertise",
+    description: "Practices guided by experienced professionals with relevant training and expertise.",
+  },
+  {
+    id: "time-managed",
+    title: "Time, thoughtfully managed.",
+    description: "A well-considered experience that respects the value of your time.",
+  },
+  {
+    id: "beyond-borders",
+    title: "Experiences beyond borders.",
+    description: "Delivers bespoke recovery experiences for better flexibility across the globe.",
+  },
+  {
+    id: "care-forward",
+    title: "Care That Carries Forward.",
+    description: "From nourishment to surroundings, every detail is thoughtfully chosen to support wellbeing that extends into everyday life.",
   },
 ];
 
+export const PILLARS_DATA = PILLARS_ITEMS;
+
 export default function PillarsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. Header entrance
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // 2. Staggered 6-Item Grid Entrance
+      const validItems = itemsRef.current.filter(Boolean);
+      if (validItems.length > 0) {
+        gsap.fromTo(
+          validItems,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="experience" className="py-10 lg:py-20 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="py-16 sm:py-20 lg:py-28 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto will-change-transform"
+    >
       {/* Section Header */}
-      <div className="text-center mb-16 lg:mb-20">
+      <div ref={headerRef} className="text-center mb-16 lg:mb-24">
         <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[2.75rem] text-[#24281B] font-normal tracking-tight">
           A private experience. A considered approach.
         </h2>
         <div className="w-12 h-[1px] bg-[#B59828] mx-auto mt-5" />
       </div>
 
-      {/* 3 Columns Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-        {PILLARS_DATA.map((pillar) => (
+      {/* 6 Features Grid (3 Columns x 2 Rows) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-12 gap-y-12 sm:gap-y-16 lg:gap-y-20">
+        {PILLARS_ITEMS.map((item, index) => (
           <div
-            key={pillar.id}
-            className="flex flex-col justify-between p-8 sm:p-9 bg-[#F6F4ED] border border-[#E7E2D2] hover:border-[#C4B79A] transition-all duration-300 rounded-xs group"
+            key={item.id}
+            ref={(el) => {
+              itemsRef.current[index] = el;
+            }}
+            className="text-center flex flex-col items-center max-w-sm mx-auto group"
           >
-            {/* Top Details */}
-            <div className="space-y-4">
-              {/* Pillar Number & Category */}
-              <div className="text-[11px] font-medium tracking-[0.25em] text-[#787C6B] uppercase">
-                {pillar.number} / {pillar.category}
-              </div>
+            {/* Title in High-Contrast Luxury Gold Serif */}
+            <h3 className="font-serif-luxury text-2xl sm:text-[1.75rem] lg:text-[1.85rem] text-[#B59828] font-normal leading-[1.25] tracking-tight mb-3 sm:mb-4 group-hover:text-[#9e841f] transition-colors">
+              {item.title}
+            </h3>
 
-              {/* Title */}
-              <h3 className="font-serif-luxury text-2xl sm:text-[1.75rem] text-[#20241A] font-medium group-hover:text-[#B59828] transition-colors leading-snug">
-                {pillar.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-sm text-[#5D6150] leading-relaxed pt-1 font-normal">
-                {pillar.description}
-              </p>
-            </div>
-
-            {/* Action Link: Configured for future page routes, currently prevents navigation */}
-            <div className="pt-8">
-              <Link
-                href={pillar.href}
-                onClick={(e) => {
-                  // Currently no redirection needed until dedicated pages are created
-                  e.preventDefault();
-                }}
-                className="w-full py-3.5 px-4 bg-[#3E4A19] hover:bg-[#313C12] text-[#FAF9F5] text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-sm"
-              >
-                <span>{pillar.buttonLabel}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-            </div>
+            {/* Description in Clean Soft Olive Sans */}
+            <p className="text-xs sm:text-sm text-[#6C7160] leading-relaxed font-normal max-w-xs">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>
