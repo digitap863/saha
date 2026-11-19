@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Cormorant_Garamond } from "next/font/google";
+import { Geist, Cormorant_Garamond, Playfair_Display, Inter_Tight } from "next/font/google";
+import { EnquiryProvider } from "@/context/EnquiryContext";
+import { Navbar, Footer, SmoothScroll } from "@/components/common";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -11,6 +13,21 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-serif-cormorant",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "500"],
+  variable: "--font-playfair-display",
+  display: "swap",
+});
+
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  weight: ["300"],
+  variable: "--font-inter-tight",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,10 +52,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${cormorant.variable} scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${cormorant.variable} ${playfair.variable} ${interTight.variable} scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-white text-[#23251D] flex flex-col selection:bg-[#B79A2B]/20 selection:text-[#3B4616]">
-        {children}
+        <EnquiryProvider>
+          <SmoothScroll>
+            <div className="min-h-screen flex flex-col bg-[#FAF9F5] text-[#22251B]">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </SmoothScroll>
+        </EnquiryProvider>
       </body>
     </html>
   );

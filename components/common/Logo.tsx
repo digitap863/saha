@@ -12,7 +12,7 @@ export default function Logo({
   className = "",
 }: LogoProps) {
   const isLight = variant === "light";
-  const logoSrc = isLight ? "/logo_bg_removed.png" : "/logo_black.png";
+  const logoSrc = isLight ? "/logo_bg_removed.png" : "/logo.png";
 
   return (
     <div className={`flex items-center select-none ${className}`}>

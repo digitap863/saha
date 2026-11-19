@@ -1,17 +1,23 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { useEnquiry } from "@/context/EnquiryContext";
 
 interface FooterProps {
   onOpenEnquire?: () => void;
 }
 
 export default function Footer({ onOpenEnquire }: FooterProps) {
+  const { openEnquire } = useEnquiry();
+  const handleOpenEnquire = onOpenEnquire || openEnquire;
+
   const footerLinks = [
     { label: "PHILOSOPHY", href: "/philosophy" },
-    { label: "EXPERIENCE", href: "/#experience" },
+    { label: "EXPERIENCE", href: "/experience" },
     { label: "WHO IT'S FOR", href: "/#who-its-for" },
     { label: "THE SETTING", href: "/#setting" },
-    { label: "ENQUIRE", href: "#enquire", action: onOpenEnquire },
+    { label: "ENQUIRE", href: "#enquire", action: handleOpenEnquire },
   ];
 
   return (

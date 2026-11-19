@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEnquiry } from "@/context/EnquiryContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +13,8 @@ interface ConversationCtaProps {
 }
 
 export default function ConversationCta({ onOpenEnquire }: ConversationCtaProps) {
+  const { openEnquire } = useEnquiry();
+  const handleOpenEnquire = onOpenEnquire || openEnquire;
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const leftColRef = useRef<HTMLDivElement>(null);
@@ -85,7 +88,7 @@ export default function ConversationCta({ onOpenEnquire }: ConversationCtaProps)
 
             <div>
               <button
-                onClick={onOpenEnquire}
+                onClick={handleOpenEnquire}
                 className="group inline-flex items-center gap-2 px-6 py-3.5 border border-[#CCD7AF]/80 text-[#FAF9F5] hover:bg-[#FAF9F5] hover:text-[#3B4616] text-[11px] tracking-[0.2em] uppercase transition-all duration-300 font-medium"
               >
                 <span>REQUEST PROGRAMME DETAILS</span>

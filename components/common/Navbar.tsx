@@ -4,12 +4,15 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Logo from "./Logo";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useEnquiry } from "@/context/EnquiryContext";
 
 interface NavbarProps {
   onOpenEnquire?: () => void;
 }
 
 export default function Navbar({ onOpenEnquire }: NavbarProps) {
+  const { openEnquire } = useEnquiry();
+  const handleOpenEnquire = onOpenEnquire || openEnquire;
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -24,16 +27,18 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
   const navLinks = [
     { label: "HOME", href: "/" },
     { label: "PHILOSOPHY", href: "/philosophy" },
-    { label: "EXPERIENCE", href: "/#experience" },
+    { label: "EXPERIENCE", href: "/experience" },
     { label: "WHO IT'S FOR", href: "/#who-its-for" },
     { label: "THE SETTING", href: "/#setting" },
   ];
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#ffff]/95 backdrop-blur-md shadow-xs py-3 "
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        mobileMenuOpen
+          ? "bg-[#FAF9F5] py-4 shadow-xs"
+          : scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-xs py-3"
           : "bg-transparent py-5"
       }`}
     >
@@ -63,7 +68,7 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
         {/* Right CTA */}
         <div className="hidden md:flex items-center">
           <button
-            onClick={onOpenEnquire}
+            onClick={handleOpenEnquire}
             className="group inline-flex items-center gap-1.5 px-4 py-2 border border-[#3E4A19] text-[#293011] hover:bg-[#3E4A19] hover:text-[#FAF9F5] text-[11px] tracking-[0.18em] uppercase transition-all duration-300 ease-out font-medium"
           >
             <span>ENQUIRE</span>
@@ -74,7 +79,7 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
         {/* Mobile Menu Button */}
         <div className="flex md:hidden items-center gap-3">
           <button
-            onClick={onOpenEnquire}
+            onClick={handleOpenEnquire}
             className="px-2.5 py-1.5 border border-[#3E4A19] text-[#293011] text-[10px] tracking-wider uppercase font-medium flex items-center gap-1"
           >
             <span>ENQUIRE</span>
@@ -92,7 +97,7 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#FAF9F5] border-b border-[#E8E4D5] px-6 py-6 shadow-xl animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden bg-[#FAF9F5] border-b border-[#E8E4D5] px-6 pt-2 pb-6 shadow-xl animate-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col space-y-4">
             {navLinks.map((item) => (
               <Link
@@ -108,7 +113,7 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onOpenEnquire?.();
+                  handleOpenEnquire();
                 }}
                 className="w-full text-center py-3 bg-[#3E4A19] text-[#FAF9F5] text-xs tracking-[0.2em] uppercase font-medium flex items-center justify-center gap-1.5"
               >
