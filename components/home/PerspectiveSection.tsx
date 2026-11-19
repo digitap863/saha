@@ -159,7 +159,7 @@ export default function PerspectiveSection() {
       <div className="hidden md:flex absolute inset-0 w-full h-full pointer-events-none select-none z-0 items-end justify-start overflow-hidden">
         <img
           ref={desktopNatureRef}
-          src="/home_nature.png"
+          src="/home_nature.webp"
           alt="Sahā - Restoration in Nature"
           className="w-full h-full object-cover object-left-bottom lg:object-contain lg:object-left-bottom select-none will-change-transform"
           style={{ transformOrigin: "left bottom" }}

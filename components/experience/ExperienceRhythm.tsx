@@ -18,31 +18,31 @@ export const RHYTHM_STEPS: RhythmStep[] = [
   {
     id: "arrive-gently",
     title: "Arrive gently",
-    imageSrc: "/experience/arrive_gently.png",
+    imageSrc: "/experience/arrive_gently.webp",
     alt: "Sahā Experience — Arrive gently with ease and decompression",
   },
   {
     id: "nourish",
     title: "Nourish",
-    imageSrc: "/experience/nourish.png",
+    imageSrc: "/experience/nourish.webp",
     alt: "Sahā Experience — Thoughtful, uncomplicated nourishment",
   },
   {
     id: "restore",
     title: "Restore",
-    imageSrc: "/experience/restore.png",
+    imageSrc: "/experience/restore.webp",
     alt: "Sahā Experience — Physical movement, mobility and reconnection",
   },
   {
     id: "make-space",
     title: "Make space",
-    imageSrc: "/experience/make_space.png",
+    imageSrc: "/experience/make_space.webp",
     alt: "Sahā Experience — Time without interruption in quiet nature",
   },
   {
     id: "close-quietly",
     title: "Close quietly",
-    imageSrc: "/experience/close_quietly.png",
+    imageSrc: "/experience/close_quietly.webp",
     alt: "Sahā Experience — Deep restorative sleep and evening quietude",
   },
 ];

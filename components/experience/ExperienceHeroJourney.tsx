@@ -161,13 +161,13 @@ export default function ExperienceHeroJourney() {
       ref={containerRef}
       className="relative w-full overflow-hidden bg-[#EDE8E1] min-h-250 lg:min-h-350 flex flex-col justify-between pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 isolate"
     >
-      {/* Full Screen Width Background Image (experience.png) - anchored at the top */}
+      {/* Full Screen Width Background Image (experience.webp) - anchored at the top */}
       <div
         ref={bgImageRef}
         className="absolute top-0 inset-x-0 w-full h-[112%] -z-10 pointer-events-none select-none overflow-hidden origin-top"
       >
         <Image
-          src="/experience.png"
+          src="/experience.webp"
           alt="Sahā Experience — Time away, used with intention"
           fill
           priority

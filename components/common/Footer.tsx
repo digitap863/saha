@@ -22,10 +22,10 @@ export default function Footer({ onOpenEnquire }: FooterProps) {
 
   return (
     <footer className="relative w-full overflow-hidden bg-[#232613] md:bg-white select-none">
-      {/* Nature Visual in Background: public/footer_bg.png (Desktop/Tablet only, hidden on mobile) */}
+      {/* Nature Visual in Background: public/footer_bg.webp (Desktop/Tablet only, hidden on mobile) */}
       <div className="hidden md:flex absolute inset-0 w-full h-full pointer-events-none select-none z-0 items-end justify-center">
         <img
-          src="/footer_bg.png"
+          src="/footer_bg.webp"
           alt="Sahā Nature Background"
           className="w-full h-full object-cover object-bottom select-none"
         />
@@ -44,7 +44,7 @@ export default function Footer({ onOpenEnquire }: FooterProps) {
                 aria-label="Sahā Home"
               >
                 <img
-                  src="/logo_bg_removed.png"
+                  src="/logo_bg_removed.webp"
                   alt="Sahā - Breathe · Be · Balance"
                   className="h-14 sm:h-16 md:h-18 w-auto object-contain block"
                 />

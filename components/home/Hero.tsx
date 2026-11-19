@@ -301,7 +301,7 @@ export default function Hero() {
       >
         <img
           ref={imageRef}
-          src="/678.png"
+          src="/678.webp"
           alt="Sahā - Golden Rim-Lit Silhouette"
           className="h-full max-h-[100dvh] w-auto max-w-none block select-none will-change-transform pointer-events-none"
           style={{ transformOrigin: "100% 100%" }}
@@ -316,7 +316,7 @@ export default function Hero() {
       >
         <img
           ref={mobileImageRef}
-          src="/678.png"
+          src="/678.webp"
           alt="Sahā - Golden Rim-Lit Silhouette"
           className="w-auto h-[48vh] sm:h-[52vh] max-h-[420px] max-w-none block select-none will-change-transform"
           style={{ transformOrigin: "100% 100%" }}

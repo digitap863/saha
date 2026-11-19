@@ -85,7 +85,7 @@ export default function RestorationFeature() {
         {/* Full-size Image at z-0 with subtle GSAP scale-in */}
         <div ref={imageRef} className="absolute inset-0 w-full h-full -z-0">
           <Image
-            src="/philosophy.png"
+            src="/philosophy.webp"
             alt="A different proposition — Restorative repose in considered environment"
             fill
             priority

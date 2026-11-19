@@ -57,7 +57,7 @@ export default function GuidanceSection() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full bg-saha-bg py-8 sm:py-12 lg:py-20 overflow-hidden"
+      className="relative w-full bg-saha-bg py-10 sm:py-12 lg:py-20 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex justify-center">
         {/* Centered Content Container */}
