@@ -7,6 +7,5 @@ export type { RestorativePracticeItem } from "./RestorativePractices";
 export { default as ExperienceRhythm, RHYTHM_STEPS } from "./ExperienceRhythm";
 export type { RhythmStep } from "./ExperienceRhythm";
 
-export { default as GuidanceSection, GUIDANCE_PILLARS } from "./GuidanceSection";
-export type { GuidancePillar } from "./GuidanceSection";
+export { default as GuidanceSection } from "./GuidanceSection";
 
