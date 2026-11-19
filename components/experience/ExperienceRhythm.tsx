@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -54,6 +55,46 @@ export default function ExperienceRhythm() {
   const imageWrappersRef = useRef<(HTMLDivElement | null)[]>([]);
   const titlesRef = useRef<(HTMLHeadingElement | null)[]>([]);
   const footnoteRef = useRef<HTMLParagraphElement>(null);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeStep, setActiveStep] = useState(0);
+
+  const checkScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+
+    const cardWidth = scrollWidth / RHYTHM_STEPS.length;
+    const currentIndex = Math.min(
+      RHYTHM_STEPS.length - 1,
+      Math.max(0, Math.round(scrollLeft / cardWidth))
+    );
+    setActiveStep(currentIndex);
+  };
+
+  const scrollToStep = (idx: number) => {
+    const targetCard = cardContainersRef.current[idx];
+    if (targetCard) {
+      targetCard.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start",
+      });
+    }
+  };
+
+  const scrollByDirection = (dir: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const scrollAmount = container.clientWidth * 0.75;
+    container.scrollBy({
+      left: dir === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -167,17 +208,20 @@ export default function ExperienceRhythm() {
         {/* ========================================================
             PART 2: 5 RHYTHM COLUMNS WITH ANIMATED IMAGES
            ======================================================== */}
-        {/* Desktop: 5-column contiguous grid. Mobile/Tablet: responsive scrollable or adaptive columns */}
-        <div className="group/strip w-full max-w-6xl mx-auto">
-          {/* Mobile view indicator note */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-1.5 items-end">
+        <div className="group/strip w-full max-w-6xl mx-auto relative">
+          {/* Mobile Horizontal Scroll Container / Desktop 5-Col Contiguous Grid */}
+          <div
+            ref={scrollContainerRef}
+            onScroll={checkScroll}
+            className="flex lg:grid lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-1.5 items-end overflow-x-auto lg:overflow-visible pb-3 lg:pb-0 px-4 sm:px-6 lg:px-0 -mx-4 sm:-mx-6 lg:mx-0 snap-x snap-mandatory scroll-smooth touch-pan-x [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
             {RHYTHM_STEPS.map((step, idx) => (
               <div
                 key={step.id}
                 ref={(el) => {
                   cardContainersRef.current[idx] = el;
                 }}
-                className="group/card flex flex-col items-center cursor-pointer will-change-transform"
+                className="group/card flex flex-col items-center cursor-pointer will-change-transform shrink-0 w-[calc(50%-6px)] sm:w-[calc(33.33%-11px)] lg:w-auto snap-start"
               >
                 {/* Pillar Header Title */}
                 <h3
@@ -211,6 +255,58 @@ export default function ExperienceRhythm() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Mobile Pagination & Navigation (hidden on desktop lg) */}
+          <div className="flex lg:hidden items-center justify-between mt-5 px-1 sm:px-2">
+            {/* Step Indicators / Dots */}
+            <div className="flex items-center gap-1.5">
+              {RHYTHM_STEPS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => scrollToStep(i)}
+                  aria-label={`Go to rhythm step ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    activeStep === i
+                      ? "w-6 bg-[#3F4C19]"
+                      : "w-1.5 bg-[#D5CFC1] hover:bg-[#A39D8D]"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Mobile swipe hint and arrows */}
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] tracking-widest uppercase text-[#888D7E] font-medium">
+                Swipe
+              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => scrollByDirection("left")}
+                  disabled={!canScrollLeft}
+                  className={`p-1.5 rounded-full border border-[#DDD7C7] transition-all duration-200 ${
+                    canScrollLeft
+                      ? "text-[#293011] bg-white/80 hover:bg-[#EAE5D9] active:scale-95"
+                      : "text-[#C2BCAD] opacity-40 cursor-not-allowed"
+                  }`}
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => scrollByDirection("right")}
+                  disabled={!canScrollRight}
+                  className={`p-1.5 rounded-full border border-[#DDD7C7] transition-all duration-200 ${
+                    canScrollRight
+                      ? "text-[#293011] bg-white/80 hover:bg-[#EAE5D9] active:scale-95"
+                      : "text-[#C2BCAD] opacity-40 cursor-not-allowed"
+                  }`}
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
