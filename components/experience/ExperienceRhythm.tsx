@@ -181,7 +181,7 @@ export default function ExperienceRhythm() {
         ease: "none",
         scrollTrigger: {
           trigger: pinContainerRef.current,
-          start: "top top+=75",
+          start: "top 30%",
           end: () => `+=${Math.abs(getDistance()) * 1.3}`,
           pin: true,
           scrub: 1,
