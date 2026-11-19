@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -50,55 +49,22 @@ export const RHYTHM_STEPS: RhythmStep[] = [
 
 export default function ExperienceRhythm() {
   const sectionRef = useRef<HTMLElement>(null);
+  const pinContainerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const cardContainersRef = useRef<(HTMLDivElement | null)[]>([]);
   const imageWrappersRef = useRef<(HTMLDivElement | null)[]>([]);
   const titlesRef = useRef<(HTMLHeadingElement | null)[]>([]);
   const footnoteRef = useRef<HTMLParagraphElement>(null);
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [activeStep, setActiveStep] = useState(0);
-
-  const checkScroll = () => {
-    if (!scrollContainerRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
-
-    const cardWidth = scrollWidth / RHYTHM_STEPS.length;
-    const currentIndex = Math.min(
-      RHYTHM_STEPS.length - 1,
-      Math.max(0, Math.round(scrollLeft / cardWidth))
-    );
-    setActiveStep(currentIndex);
-  };
-
-  const scrollToStep = (idx: number) => {
-    const targetCard = cardContainersRef.current[idx];
-    if (targetCard) {
-      targetCard.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "start",
-      });
-    }
-  };
-
-  const scrollByDirection = (dir: "left" | "right") => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const scrollAmount = container.clientWidth * 0.75;
-    container.scrollBy({
-      left: dir === "left" ? -scrollAmount : scrollAmount,
-      behavior: "smooth",
-    });
-  };
-
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // 1. Headline Fade-Up
+    const mm = gsap.matchMedia();
+
+    // ==========================================
+    // 1. DESKTOP (>= 1024px): 5-column grid entrance
+    // ==========================================
+    mm.add("(min-width: 1024px)", () => {
+      // Headline entrance
       if (headlineRef.current) {
         gsap.fromTo(
           headlineRef.current,
@@ -117,7 +83,7 @@ export default function ExperienceRhythm() {
         );
       }
 
-      // 2. Titles Stagger Entrance
+      // Titles stagger entrance
       const validTitles = titlesRef.current.filter(Boolean);
       if (validTitles.length > 0) {
         gsap.fromTo(
@@ -138,7 +104,7 @@ export default function ExperienceRhythm() {
         );
       }
 
-      // 3. Image Curtain Wipe & Scale Entrance
+      // Images curtain reveal & scale
       const validImages = imageWrappersRef.current.filter(Boolean);
       if (validImages.length > 0) {
         gsap.fromTo(
@@ -163,149 +129,157 @@ export default function ExperienceRhythm() {
           }
         );
       }
+    });
 
-      // 5. Footnote subtle entrance
-      if (footnoteRef.current) {
+    // ==========================================
+    // 2. MOBILE / TABLET (< 1024px): Pinned Horizontal Scroll
+    // ==========================================
+    mm.add("(max-width: 1023px)", () => {
+      if (!pinContainerRef.current || !trackRef.current) return;
+
+      const track = trackRef.current;
+      const validImages = imageWrappersRef.current.filter(Boolean);
+      const validTitles = titlesRef.current.filter(Boolean);
+
+      // Ensure images & titles are visible on mobile
+      validImages.forEach((img) => {
+        if (img) gsap.set(img, { clipPath: "inset(0% 0% 0% 0%)", scale: 1, opacity: 1 });
+      });
+      validTitles.forEach((t) => {
+        if (t) gsap.set(t, { opacity: 1, y: 0 });
+      });
+
+      // Headline entrance
+      if (headlineRef.current) {
         gsap.fromTo(
-          footnoteRef.current,
-          { opacity: 0, y: 12 },
+          headlineRef.current,
+          { opacity: 0, y: 24 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.8,
             ease: "power2.out",
             scrollTrigger: {
-              trigger: footnoteRef.current,
-              start: "top 92%",
+              trigger: headlineRef.current,
+              start: "top 88%",
               toggleActions: "play none none reverse",
             },
           }
         );
       }
-    }, sectionRef);
 
-    return () => ctx.revert();
+      // Calculate total horizontal travel distance
+      const getDistance = () => {
+        const containerWidth = track.parentElement
+          ? track.parentElement.clientWidth
+          : window.innerWidth;
+        return -(track.scrollWidth - containerWidth);
+      };
+
+      gsap.to(track, {
+        x: getDistance,
+        ease: "none",
+        scrollTrigger: {
+          trigger: pinContainerRef.current,
+          start: "top top+=75",
+          end: () => `+=${Math.abs(getDistance()) * 1.3}`,
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        },
+      });
+    });
+
+    // Footnote entrance (both desktop & mobile)
+    if (footnoteRef.current) {
+      gsap.fromTo(
+        footnoteRef.current,
+        { opacity: 0, y: 12 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: footnoteRef.current,
+            start: "top 92%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    return () => mm.revert();
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full  py-8 sm:py-12 lg:py-20 overflow-hidden"
+      className="relative w-full py-8 sm:py-12 lg:py-20 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        {/* ========================================================
-            PART 1: SECTION TITLE
-           ======================================================== */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-18 lg:mb-20">
-          <h2
-            ref={headlineRef}
-            className="font-headline-sans font-light text-[#1F231B] text-3xl sm:text-4xl lg:text-[3.35rem] leading-[1.12] tracking-[-0.04em] will-change-transform"
-          >
-            A rhythm, not a timetable.
-          </h2>
-        </div>
-
-        {/* ========================================================
-            PART 2: 5 RHYTHM COLUMNS WITH ANIMATED IMAGES
-           ======================================================== */}
-        <div className="group/strip w-full max-w-6xl mx-auto relative">
-          {/* Mobile Horizontal Scroll Container / Desktop 5-Col Contiguous Grid */}
-          <div
-            ref={scrollContainerRef}
-            onScroll={checkScroll}
-            className="flex lg:grid lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-1.5 items-end overflow-x-auto lg:overflow-visible pb-3 lg:pb-0 px-4 sm:px-6 lg:px-0 -mx-4 sm:-mx-6 lg:mx-0 snap-x snap-mandatory scroll-smooth touch-pan-x [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {RHYTHM_STEPS.map((step, idx) => (
-              <div
-                key={step.id}
-                ref={(el) => {
-                  cardContainersRef.current[idx] = el;
-                }}
-                className="group/card flex flex-col items-center cursor-pointer will-change-transform shrink-0 w-[calc(50%-6px)] sm:w-[calc(33.33%-11px)] lg:w-auto snap-start"
-              >
-                {/* Pillar Header Title */}
-                <h3
-                  ref={(el) => {
-                    titlesRef.current[idx] = el;
-                  }}
-                  className="font-playfair text-sm sm:text-base lg:text-[1.05rem] text-[#22251B] font-normal tracking-[-0.01em] text-center mb-3 sm:mb-4 group-hover/card:text-[#C47B3F] transition-colors duration-400"
-                >
-                  {step.title}
-                </h3>
-
-                {/* Image Mask Frame with GSAP Curtain Reveal & Hover Zoom */}
-                <div className="relative w-full aspect-[2/3.1] rounded-xs overflow-hidden bg-[#ECE8DF] shadow-xs">
-                  <div
-                    ref={(el) => {
-                      imageWrappersRef.current[idx] = el;
-                    }}
-                    className="relative w-full h-full will-change-transform"
-                  >
-                    <Image
-                      src={step.imageSrc}
-                      alt={step.alt}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-108 group-hover/card:brightness-[1.02]"
-                    />
-
-                    {/* Subtle warm ambient vignette */}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div ref={pinContainerRef} className="w-full">
+          {/* ========================================================
+              PART 1: SECTION TITLE
+             ======================================================== */}
+          <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-20">
+            <h2
+              ref={headlineRef}
+              className="font-headline-sans font-light text-[#1F231B] text-3xl sm:text-4xl lg:text-[3.35rem] leading-[1.12] tracking-[-0.04em] will-change-transform"
+            >
+              A rhythm, not a timetable.
+            </h2>
           </div>
 
-          {/* Mobile Pagination & Navigation (hidden on desktop lg) */}
-          <div className="flex lg:hidden items-center justify-between mt-5 px-1 sm:px-2">
-            {/* Step Indicators / Dots */}
-            <div className="flex items-center gap-1.5">
-              {RHYTHM_STEPS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => scrollToStep(i)}
-                  aria-label={`Go to rhythm step ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    activeStep === i
-                      ? "w-6 bg-[#3F4C19]"
-                      : "w-1.5 bg-[#D5CFC1] hover:bg-[#A39D8D]"
-                  }`}
-                />
-              ))}
-            </div>
+          {/* ========================================================
+              PART 2: 5 RHYTHM COLUMNS (GSAP Horizontal Scroll on Mobile)
+             ======================================================== */}
+          <div className="group/strip w-full max-w-6xl mx-auto overflow-hidden">
+            <div
+              ref={trackRef}
+              className="flex lg:grid lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-1.5 items-end flex-nowrap will-change-transform"
+            >
+              {RHYTHM_STEPS.map((step, idx) => (
+                <div
+                  key={step.id}
+                  ref={(el) => {
+                    cardContainersRef.current[idx] = el;
+                  }}
+                  className="group/card flex flex-col items-center cursor-pointer will-change-transform shrink-0 w-[calc(50vw-22px)] sm:w-[calc(33.33vw-24px)] lg:w-auto"
+                >
+                  {/* Pillar Header Title */}
+                  <h3
+                    ref={(el) => {
+                      titlesRef.current[idx] = el;
+                    }}
+                    className="font-playfair text-sm sm:text-base lg:text-[1.05rem] text-[#22251B] font-normal tracking-[-0.01em] text-center mb-3 sm:mb-4 group-hover/card:text-[#C47B3F] transition-colors duration-400"
+                  >
+                    {step.title}
+                  </h3>
 
-            {/* Mobile swipe hint and arrows */}
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] tracking-widest uppercase text-[#888D7E] font-medium">
-                Swipe
-              </span>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => scrollByDirection("left")}
-                  disabled={!canScrollLeft}
-                  className={`p-1.5 rounded-full border border-[#DDD7C7] transition-all duration-200 ${
-                    canScrollLeft
-                      ? "text-[#293011] bg-white/80 hover:bg-[#EAE5D9] active:scale-95"
-                      : "text-[#C2BCAD] opacity-40 cursor-not-allowed"
-                  }`}
-                  aria-label="Scroll left"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => scrollByDirection("right")}
-                  disabled={!canScrollRight}
-                  className={`p-1.5 rounded-full border border-[#DDD7C7] transition-all duration-200 ${
-                    canScrollRight
-                      ? "text-[#293011] bg-white/80 hover:bg-[#EAE5D9] active:scale-95"
-                      : "text-[#C2BCAD] opacity-40 cursor-not-allowed"
-                  }`}
-                  aria-label="Scroll right"
-                >
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
+                  {/* Image Mask Frame with GSAP Curtain Reveal & Hover Zoom */}
+                  <div className="relative w-full aspect-[2/3.1] rounded-xs overflow-hidden bg-[#ECE8DF] shadow-xs">
+                    <div
+                      ref={(el) => {
+                        imageWrappersRef.current[idx] = el;
+                      }}
+                      className="relative w-full h-full will-change-transform"
+                    >
+                      <Image
+                        src={step.imageSrc}
+                        alt={step.alt}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                        className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-108 group-hover/card:brightness-[1.02]"
+                      />
+
+                      {/* Subtle warm ambient vignette */}
+                      <div className="absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -327,4 +301,3 @@ export default function ExperienceRhythm() {
     </section>
   );
 }
-
