@@ -13,7 +13,7 @@ export default function Preloader() {
     document.body.style.overflow = "hidden";
 
     const startTime = Date.now();
-    const minDisplayTime = 2600; // Minimum 2.6s so the brand animation plays elegantly
+    const minDisplayTime = 4000; // Full duration of the 4s GIF animation loop
 
     let maxTimer: NodeJS.Timeout | null = null;
     let fadeTimer: NodeJS.Timeout | null = null;
@@ -30,7 +30,7 @@ export default function Preloader() {
       handleComplete();
     } else {
       window.addEventListener("load", handleComplete);
-      maxTimer = setTimeout(handleComplete, 4500);
+      maxTimer = setTimeout(handleComplete, 6000);
     }
 
     return () => {

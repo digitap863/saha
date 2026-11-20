@@ -15,8 +15,8 @@ export default function Footer({ onOpenEnquire }: FooterProps) {
   const footerLinks = [
     { label: "PHILOSOPHY", href: "/philosophy" },
     { label: "EXPERIENCE", href: "/experience" },
-    { label: "WHO IT'S FOR", href: "/#who-its-for" },
-    { label: "THE SETTING", href: "/#setting" },
+    { label: "WHO IT'S FOR", href: "/who-its-for" },
+    // { label: "THE SETTING", href: "/#setting" },
     { label: "ENQUIRE", href: "#enquire", action: handleOpenEnquire },
   ];
 

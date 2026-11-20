@@ -39,8 +39,8 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
     "block text-[11px] sm:text-xs font-medium text-[#4A2E1D] mb-1";
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 overflow-y-auto bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg md:max-w-4xl lg:max-w-5xl md:h-[550px] lg:h-[570px] max-h-[92vh] bg-[#FAF1EC] border border-[#E8DDD4] shadow-2xl rounded-xs text-[#3D2314] overflow-hidden my-auto flex flex-col justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-2 sm:p-4 overflow-y-auto bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg md:max-w-4xl lg:max-w-5xl md:h-137.5 lg:h-142.5 max-h-[92vh] bg-[#FAF1EC] border border-[#E8DDD4] shadow-2xl rounded-xs text-[#3D2314] overflow-hidden my-auto flex flex-col justify-center">
         {/* Subtle Close Button */}
         <button
           onClick={resetAndClose}
@@ -78,44 +78,45 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.42fr] md:divide-x divide-[#E8DDD4] md:h-full">
             {/* ========================================================
-                LEFT SECTION: Hero Statement & 3D Glass Emblem
-                Mobile: compact row (text left, emblem right) above the form
-                Desktop: fixed-height stacked layout with balanced spacing
-               ======================================================== */}
-            <div className="flex px-4 pt-8 pb-5 md:px-8 lg:px-12 md:py-8 flex-col justify-between items-start text-left bg-[#FAF1EC] border-b border-[#E8DDD4] md:border-b-0 md:h-full">
-              <div className="w-full flex flex-row md:flex-col items-center md:items-start justify-between md:h-full gap-3 md:gap-4">
-                {/* Text block */}
-                <div className="flex-1 min-w-0 space-y-1.5 md:space-y-3">
-                  {/* Eyebrow */}
-                  <div className="text-[9px] md:text-[11px] font-medium tracking-[0.2em] md:tracking-[0.25em] text-[#8C6548] uppercase">
-                    SAHĀ · PRIVATE ENQUIRIES
-                  </div>
+    LEFT SECTION: Hero Statement & 3D Glass Emblem
+    Mobile: compact row (text left, emblem right) above the form
+    Desktop: single shared column, text + emblem flush left
+   ======================================================== */}
+<div className="flex px-4 pt-8 pb-5 md:px-12 lg:px-16 md:py-8 flex-col justify-between md:justify-start items-start text-left bg-[#FAF1EC] border-b border-[#E8DDD4] md:border-b-0 md:h-full md:min-h-0">
+  {/* Shared column: text + emblem share the same left edge and width */}
+  <div className="w-full md:max-w-76 lg:max-w-84 md:mx-auto flex flex-row md:flex-col items-center md:items-start gap-3 md:gap-8 md:flex-1 md:min-h-0">
+    {/* Text block */}
+    <div className="flex-1 md:flex-none min-w-0 space-y-1.5 md:space-y-4">
+      {/* Eyebrow */}
+      <div className="text-[9px] md:text-[11px] font-medium tracking-[0.2em] md:tracking-[0.25em] text-[#8C6548] uppercase">
+        SAHĀ · PRIVATE ENQUIRIES
+      </div>
 
-                  {/* Main Serif Headline */}
-                  <h2 className="font-playfair text-[1.5rem] leading-[1.12] md:text-[2.2rem] lg:text-[2.45rem] text-[#4A2E1D] font-normal tracking-[-0.015em]">
-                    Begin with a <br className="hidden md:block" />
-                    conversation.
-                  </h2>
+      {/* Main Serif Headline */}
+      <h2 className="font-playfair text-[1.5rem] md:text-[2.6rem] lg:text-[2.75rem] text-[#4A2E1D] font-normal leading-[1.12] tracking-[-0.015em]">
+        Begin with a <br className="hidden md:block" />
+        conversation.
+      </h2>
 
-                  {/* Description */}
-                  <p className="text-[11px] md:text-xs lg:text-[13px] text-[#6E5D52] leading-snug md:leading-relaxed max-w-sm">
-                    Every experience begins with understanding what matters to you. Share a few
-                    details and our team will connect with you personally.
-                  </p>
-                </div>
+      {/* Description */}
+      <p className="text-[11px] md:text-sm text-[#6E5D52] leading-snug md:leading-relaxed">
+        Every experience begins with understanding what matters to you. Share a few
+        details and our team will connect with you personally.
+      </p>
+    </div>
 
-                {/* 3D Glass Emblem: small on mobile, elegant scale on md+ */}
-                <div className="relative w-20 shrink-0 md:w-36 lg:w-44 aspect-1140/1180 select-none pointer-events-none self-start">
-                  <Image
-                    src="/enquiry_modal.webp"
-                    alt="Sahā Emblem"
-                    fill
-                    unoptimized
-                    className="object-contain object-center md:object-left"
-                  />
-                </div>
-              </div>
-            </div>
+    {/* 3D Glass Emblem - desktop: fills remaining column space, left edge flush with text */}
+    <div className="relative w-20 shrink-0 aspect-1140/1180 self-start md:self-auto md:w-full md:flex-1 md:min-h-0 md:aspect-auto select-none pointer-events-none">
+      <Image
+        src="/enquiry_modal.webp"
+        alt="Sahā Emblem"
+        fill
+        unoptimized
+        className="object-contain object-center md:object-left"
+      />
+    </div>
+  </div>
+</div>
 
             {/* ========================================================
                 RIGHT SECTION: Form Details

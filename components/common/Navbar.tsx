@@ -28,8 +28,8 @@ export default function Navbar({ onOpenEnquire }: NavbarProps) {
     { label: "HOME", href: "/" },
     { label: "PHILOSOPHY", href: "/philosophy" },
     { label: "EXPERIENCE", href: "/experience" },
-    { label: "WHO IT'S FOR", href: "/#who-its-for" },
-    { label: "THE SETTING", href: "/#setting" },
+    { label: "WHO IT'S FOR", href: "/who-its-for" },
+    // { label: "THE SETTING", href: "/#setting" },
   ];
 
   return (
