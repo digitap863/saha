@@ -95,9 +95,9 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
               </div>
 
               {/* 3D Glass Emblem Graphic */}
-              <div className="relative w-44 sm:w-52 md:w-56 aspect-[260/280] mt-4 sm:mt-8 mix-blend-multiply select-none pointer-events-none">
+              <div className="relative w-44 sm:w-52 md:w-60 aspect-square mt-4 sm:mt-8 mix-blend-multiply select-none pointer-events-none">
                 <Image
-                  src="/enquiry_emblem.webp"
+                  src="/enquiry_modal.webp"
                   alt="Sahā Emblem"
                   fill
                   unoptimized
