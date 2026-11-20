@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Cormorant_Garamond, Playfair_Display, Inter_Tight } from "next/font/google";
 import { EnquiryProvider } from "@/context/EnquiryContext";
-import { Navbar, Footer, SmoothScroll } from "@/components/common";
+import { Navbar, Footer, SmoothScroll, Preloader } from "@/components/common";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -55,6 +55,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${cormorant.variable} ${playfair.variable} ${interTight.variable} scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-white text-[#23251D] flex flex-col selection:bg-[#B79A2B]/20 selection:text-[#3B4616]">
+        <Preloader />
         <EnquiryProvider>
           <SmoothScroll>
             <div className="min-h-screen flex flex-col bg-[#FAF9F5] text-[#22251B]">
