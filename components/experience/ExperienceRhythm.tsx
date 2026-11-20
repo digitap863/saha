@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export interface RhythmStep {
   id: string;
@@ -57,7 +59,7 @@ export default function ExperienceRhythm() {
   const titlesRef = useRef<(HTMLHeadingElement | null)[]>([]);
   const footnoteRef = useRef<HTMLParagraphElement>(null);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const mm = gsap.matchMedia();
 
     // ==========================================
@@ -210,7 +212,14 @@ export default function ExperienceRhythm() {
       );
     }
 
-    return () => mm.revert();
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.trigger === pinContainerRef.current || st.trigger === sectionRef.current) {
+          st.kill(true);
+        }
+      });
+      mm.revert();
+    };
   }, []);
 
   return (

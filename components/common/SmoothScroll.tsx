@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,10 +10,23 @@ import "lenis/dist/lenis.css";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const lenisRef = useRef<Lenis | null>(null);
+
+  // Scroll to top and refresh ScrollTrigger on route change
   useEffect(() => {
-    // Only activate Lenis on desktop view (screens >= 1024px or fine pointer devices)
-    // On mobile devices, native touch momentum scrolling is preserved to avoid stutter,
-    // address-bar jump, and touch-trapping drawbacks.
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo(0, 0);
+    // Give DOM a frame to settle then refresh ScrollTrigger
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [pathname]);
+
+  useEffect(() => {
     const isDesktop = () => {
       if (typeof window === "undefined") return false;
       const isWide = window.innerWidth >= 1024;
@@ -24,11 +38,10 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       return;
     }
 
-    let lenis: Lenis | null = null;
     let tickerCb: ((time: number) => void) | null = null;
 
     const initLenis = () => {
-      lenis = new Lenis({
+      const lenis = new Lenis({
         duration: 1.25,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: "vertical",
@@ -37,6 +50,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
         wheelMultiplier: 0.9,
         touchMultiplier: 0, // Never hijack mobile/touch gestures
       });
+
+      lenisRef.current = lenis;
 
       // Synchronize Lenis scroll with GSAP ScrollTrigger
       lenis.on("scroll", ScrollTrigger.update);
@@ -52,14 +67,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     initLenis();
 
     const handleResize = () => {
-      if (!isDesktop() && lenis) {
-        // Destroy Lenis if resized to mobile
+      if (!isDesktop() && lenisRef.current) {
         if (tickerCb) gsap.ticker.remove(tickerCb);
-        lenis.destroy();
-        lenis = null;
+        lenisRef.current.destroy();
+        lenisRef.current = null;
         ScrollTrigger.refresh();
-      } else if (isDesktop() && !lenis) {
-        // Re-initialize if resized back to desktop
+      } else if (isDesktop() && !lenisRef.current) {
         initLenis();
         ScrollTrigger.refresh();
       }
@@ -70,7 +83,10 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     return () => {
       window.removeEventListener("resize", handleResize);
       if (tickerCb) gsap.ticker.remove(tickerCb);
-      if (lenis) lenis.destroy();
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
     };
   }, []);
 

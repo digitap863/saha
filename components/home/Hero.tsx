@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
+  const innerPinRef = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
   const headlineLine1Ref = useRef<HTMLSpanElement>(null);
   const headlineLine2Ref = useRef<HTMLSpanElement>(null);
@@ -25,7 +28,7 @@ export default function Hero() {
   const mobileContainerRef = useRef<HTMLDivElement>(null);
   const mobileImageRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const mm = gsap.matchMedia(heroRef);
 
     // 1. Entrance animation on page load: Luxury masked reveal & deblur
@@ -134,7 +137,7 @@ export default function Hero() {
     mm.add("(min-width: 768px)", () => {
       const scrollTl = gsap.timeline({
         scrollTrigger: {
-          trigger: heroRef.current,
+          trigger: innerPinRef.current,
           start: "top top",
           end: "+=65%",
           pin: true,
@@ -227,16 +230,27 @@ export default function Hero() {
       }
     });
 
-    return () => mm.revert();
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.trigger === innerPinRef.current || st.trigger === heroRef.current) {
+          st.kill(true);
+        }
+      });
+      mm.revert();
+    };
   }, []);
 
   return (
     <section
       ref={heroRef}
       id="home"
-      className="relative w-full overflow-x-clip bg-white min-h-[100dvh] h-[100dvh] flex items-start md:items-center pt-20 sm:pt-24 md:pt-0"
+      className="relative w-full overflow-x-clip bg-white min-h-[100dvh] h-[100dvh]"
     >
-      {/* Left Content Container */}
+      <div
+        ref={innerPinRef}
+        className="w-full h-full relative flex items-start md:items-center pt-20 sm:pt-24 md:pt-0"
+      >
+        {/* Left Content Container */}
       <div
         ref={textContentRef}
         className="w-full max-w-375 mx-auto px-6 sm:px-12 md:px-16 lg:px-20 xl:px-24 pt-4 sm:pt-6 md:py-16 lg:py-24 z-20 relative will-change-transform"
@@ -321,6 +335,7 @@ export default function Hero() {
           className="w-auto h-[48vh] sm:h-[52vh] max-h-[420px] max-w-none block select-none will-change-transform"
           style={{ transformOrigin: "100% 100%" }}
         />
+      </div>
       </div>
     </section>
   );
