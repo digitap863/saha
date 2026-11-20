@@ -94,7 +94,7 @@ export default function KnowThePlaceSection() {
     <section
       ref={sectionRef}
       id="setting-journey"
-      className="relative w-full py-6 sm:py-12 lg:pb-25 bg-[#FAF9F5]"
+      className="relative w-full py-6 sm:py-12 lg:pb-25 bg-saha-bg"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Header Block */}

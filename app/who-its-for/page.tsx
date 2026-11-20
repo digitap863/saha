@@ -8,8 +8,8 @@ import {
   ProfilesSection,
   PrinciplesSection,
   KnowThePlaceSection,
+  DistinctionCta,
 } from "@/components/whoisitfor";
-import { ConversationCta } from "@/components/home";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +36,9 @@ export default function WhoItsForPage() {
 
       {/* 4. Setting & Journey Information */}
       <KnowThePlaceSection />
+
+      {/* 5. Considered Distinction CTA Card */}
+      <DistinctionCta />
     </>
   );
 }
