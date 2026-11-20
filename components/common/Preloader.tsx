@@ -61,7 +61,7 @@ export default function Preloader() {
         loading ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      <div className="relative w-[92vw] sm:w-[85vw] md:w-[75vw] max-w-4xl lg:max-w-5xl aspect-[1536/1024] flex items-center justify-center">
+      <div className="relative w-[75vw] sm:w-[60vw] md:w-[480px] lg:w-[540px] max-w-[85vw] aspect-[1536/1024] flex items-center justify-center">
         <Image
           src="/saha%20loading%20animation.gif"
           alt="Sahā Loading..."
