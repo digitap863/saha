@@ -145,28 +145,6 @@ export default function Hero() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onEnter: () => {
-            if (imageContainerRef.current) {
-              imageContainerRef.current.style.zIndex = "60";
-            }
-          },
-          onEnterBack: () => {
-            if (imageContainerRef.current) {
-              imageContainerRef.current.style.zIndex = "60";
-            }
-          },
-          onUpdate: (self) => {
-            if (imageContainerRef.current) {
-              if (self.direction === -1) {
-                imageContainerRef.current.style.zIndex = "60";
-              }
-            }
-          },
-          onLeave: () => {
-            if (imageContainerRef.current) {
-              imageContainerRef.current.style.zIndex = "10";
-            }
-          },
         },
       });
 
@@ -244,11 +222,11 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative w-full overflow-x-clip bg-white min-h-[100dvh] h-[100dvh]"
+      className="relative w-full bg-white min-h-[100dvh]"
     >
       <div
         ref={innerPinRef}
-        className="w-full h-full relative flex items-start md:items-center pt-20 sm:pt-24 md:pt-0"
+        className="w-full min-h-[100dvh] h-[100dvh] relative overflow-hidden flex items-start md:items-center pt-20 sm:pt-24 md:pt-0"
       >
         {/* Left Content Container */}
       <div
@@ -306,11 +284,11 @@ export default function Hero() {
       </div>
 
       {/* Right Silhouette Image - Desktop/Tablet:
-          Anchored strictly to `bottom-0 right-0` with `translate-y-[6px]` and `h-[100dvh]`
-          so the shoulders ALWAYS sit firmly on the bottom of the screen with ZERO white gap. */}
+          Anchored strictly to `bottom-0 right-0` and `h-[100dvh]`
+          so the silhouette ALWAYS sits firmly on the bottom of the screen with ZERO white gap. */}
       <div
         ref={imageContainerRef}
-        className="hidden md:flex absolute right-0 bottom-0 h-full max-h-[100dvh] w-auto items-end justify-end pointer-events-none select-none z-[60] will-change-transform translate-y-[6px]"
+        className="hidden md:flex absolute right-0 bottom-0 h-full max-h-[100dvh] w-auto items-end justify-end pointer-events-none select-none z-10 will-change-transform"
         style={{ transformOrigin: "100% 100%" }}
       >
         <img
@@ -325,7 +303,7 @@ export default function Hero() {
       {/* Right Silhouette Image - Mobile: Anchored to bottom-right */}
       <div
         ref={mobileContainerRef}
-        className="flex md:hidden absolute right-0 bottom-0 w-full justify-end pointer-events-none select-none will-change-transform translate-y-[4px] z-10"
+        className="flex md:hidden absolute right-0 bottom-0 w-full justify-end pointer-events-none select-none will-change-transform z-10"
         style={{ transformOrigin: "100% 100%" }}
       >
         <img

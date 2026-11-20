@@ -153,7 +153,7 @@ export default function PerspectiveSection() {
     <section
       ref={sectionRef}
       id="philosophy"
-      className="relative w-full overflow-hidden bg-white min-h-[460px] sm:min-h-[520px] md:min-h-[720px] lg:min-h-[820px] flex items-center py-14 sm:py-16 md:py-20 lg:py-28"
+      className="relative z-10 w-full overflow-hidden bg-white min-h-[460px] sm:min-h-[520px] md:min-h-[720px] lg:min-h-[820px] flex items-center py-14 sm:py-16 md:py-20 lg:py-28"
     >
       {/* Nature Visual Layer: Rendered only on Desktop & Tablet (hidden on mobile) */}
       <div className="hidden md:flex absolute inset-0 w-full h-full pointer-events-none select-none z-0 items-end justify-start overflow-hidden">
