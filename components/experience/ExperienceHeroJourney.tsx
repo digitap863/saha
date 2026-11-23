@@ -167,7 +167,7 @@ export default function ExperienceHeroJourney() {
         className="absolute top-0 inset-x-0 w-full h-[112%] -z-10 pointer-events-none select-none overflow-hidden origin-top"
       >
         <Image
-          src="/experience.webp"
+          src="/experience/experience.webp"
           alt="Sahā Experience — Time away, used with intention"
           fill
           priority

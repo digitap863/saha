@@ -62,10 +62,10 @@ export default function DistinctionCta({ onOpenEnquire }: DistinctionCtaProps) {
     >
       <div
         ref={cardRef}
-        className="relative bg-[#F2EEE6] border border-[#E0D9CC] rounded-[2px] px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20 shadow-xs overflow-hidden"
+        className="relative bg-[#F2EEE6] border border-[#E0D9CC] rounded-xs px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20 shadow-xs overflow-hidden"
       >
         {/* Subtle Luxury Pattern Texture */}
-        <div className="absolute inset-0 opacity-[0.035] bg-[radial-gradient(#2B2520_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+        <div className="absolute inset-0 opacity-[0.035] bg-[radial-gradient(#2B2520_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start relative z-10">
           {/* Left Column */}
@@ -94,7 +94,7 @@ export default function DistinctionCta({ onOpenEnquire }: DistinctionCtaProps) {
             <div className="pt-3">
               <button
                 onClick={handleOpenEnquire}
-                className="inline-flex items-center gap-2.5 px-6 sm:px-7 py-3 bg-[#2B2520] hover:bg-[#171412] text-[#F2EEE6] text-[11px] sm:text-xs font-medium tracking-[0.18em] uppercase transition-all rounded-[2px] active:scale-98 cursor-pointer group/btn"
+                className="inline-flex items-center gap-2.5 px-6 sm:px-7 py-3 bg-[#2B2520] hover:bg-[#171412] text-[#F2EEE6] text-[11px] sm:text-xs font-medium tracking-[0.18em] uppercase transition-all rounded-xs active:scale-98 cursor-pointer group/btn"
               >
                 <span>Begin with a conversation</span>
                 <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
