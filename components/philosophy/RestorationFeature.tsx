@@ -80,17 +80,27 @@ export default function RestorationFeature() {
     >
       <div
         ref={cardRef}
-        className="relative isolate rounded-xs overflow-hidden w-full aspect-[1755/896] min-h-[480px] sm:min-h-[540px] lg:min-h-[580px] flex flex-col justify-between p-8 sm:p-12 lg:p-16 text-[#FAFBF8] bg-[#223F32] shadow-sm"
+        className="relative isolate rounded-xs overflow-hidden w-full md:aspect-1755/896 min-h-125 sm:min-h-135 lg:min-h-145 flex flex-col justify-between p-8 sm:p-12 lg:p-16 text-[#FAFBF8] bg-[#223F32] shadow-sm"
       >
         {/* Full-size Image at z-0 with subtle GSAP scale-in */}
-        <div ref={imageRef} className="absolute inset-0 w-full h-full -z-0">
+        <div ref={imageRef} className="absolute inset-0 w-full h-full z-0">
+          {/* Mobile View: Portrait composition */}
+          <Image
+            src="/philosophy_mob.png"
+            alt="A different proposition — Restorative repose in considered environment"
+            fill
+            priority
+            unoptimized
+            className="block md:hidden object-cover object-center pointer-events-none"
+          />
+          {/* Desktop/Tablet View: Landscape panorama */}
           <Image
             src="/philosophy.webp"
             alt="A different proposition — Restorative repose in considered environment"
             fill
             priority
             unoptimized
-            className="object-cover object-right md:object-center pointer-events-none"
+            className="hidden md:block object-cover object-right md:object-center pointer-events-none"
           />
         </div>
 
@@ -98,7 +108,7 @@ export default function RestorationFeature() {
         <div className="relative z-10 max-w-lg lg:max-w-xl pointer-events-auto">
           <span
             ref={eyebrowRef}
-            className="text-[10px] sm:text-[11px] font-medium tracking-[0.28em] text-[#8EAF9F] uppercase block mb-8 sm:mb-12"
+            className="text-[10px] sm:text-[11px] font-medium tracking-[0.28em] text-[#8EAF9F] uppercase block mb-2 sm:mb-12"
           >
             A DIFFERENT PROPOSITION
           </span>

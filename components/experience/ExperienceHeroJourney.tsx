@@ -159,31 +159,44 @@ export default function ExperienceHeroJourney() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-[#EDE8E1] min-h-250 lg:min-h-350 flex flex-col justify-between pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 isolate"
+      className="relative w-full overflow-hidden bg-[#EDE8E1] min-h-[960px] md:min-h-250 lg:min-h-350 flex flex-col justify-between pt-20 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 isolate"
     >
-      {/* Full Screen Width Background Image (experience.webp) - anchored at the top */}
+      {/* Full Screen Width Background Image (experience.webp / experience_mob.png) - anchored at the top */}
       <div
         ref={bgImageRef}
         className="absolute top-0 inset-x-0 w-full h-[112%] -z-10 pointer-events-none select-none overflow-hidden origin-top"
       >
+        {/* Mobile View: Portrait composition */}
+        <Image
+          src="/experience/experience_mob.png"
+          alt="Sahā Experience — Time away, used with intention"
+          fill
+          priority
+          unoptimized
+          className="block md:hidden object-cover object-[center_top]"
+        />
+        {/* Desktop / Tablet View */}
         <Image
           src="/experience/experience.webp"
           alt="Sahā Experience — Time away, used with intention"
           fill
           priority
           unoptimized
-          className="object-cover object-[75%_top] sm:object-[center_top]"
+          className="hidden md:block object-cover object-[75%_top] sm:object-[center_top]"
         />
+
+        {/* Mobile-only soft gradient scrim: keeps the top woman's face clear while ensuring the lower journey text is 100% readable */}
+        <div className="block md:hidden absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-40% to-[#EDE8E1] via-68% pointer-events-none" />
       </div>
 
       {/* Inner Container: Aligns typography and content with page grid */}
-      <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex flex-col justify-between flex-1">
+      <div className="w-full max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 flex flex-col justify-between flex-1">
         {/* ========================================================
             PART 1: TOP HERO STATEMENT
            ======================================================== */}
         <div className="relative z-10 max-w-xl lg:max-w-2xl pt-2 sm:pt-4">
           {/* Main Dual-Tone Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-[4.5rem] leading-none tracking-normal font-light">
+          <h1 className="text-[2.5rem] sm:text-5xl lg:text-[4.5rem] leading-[1.05] sm:leading-none tracking-normal font-light">
             {/* Line 1: Warm Ochre Tightly Tracked Sans */}
             <span className="block overflow-hidden py-1">
               <span
@@ -195,7 +208,7 @@ export default function ExperienceHeroJourney() {
             </span>
 
             {/* Line 2: Playfair Display Italic */}
-            <span className="block overflow-hidden py-2.5 pr-4 -mr-4">
+            <span className="block overflow-hidden py-1.5 sm:py-2.5 pr-4 -mr-4">
               <span
                 ref={topHeadline2Ref}
                 className="font-playfair italic font-normal text-[#1C3A2B] tracking-[-0.01em] inline-block transform-gpu will-change-transform"
@@ -205,10 +218,10 @@ export default function ExperienceHeroJourney() {
             </span>
           </h1>
 
-          {/* Subtitle Description */}
+          {/* Subtitle Description: constrained to max-w-[225px] on mobile to stay clear of the woman's face */}
           <p
             ref={topSubtitleRef}
-            className="font-playfair font-normal text-[#1C3A2B] text-[17px] leading-[1.5] max-w-[340px] mt-6 sm:mt-8 will-change-transform"
+            className="font-playfair font-normal text-[#1C3A2B] text-[13.5px] sm:text-[17px] leading-relaxed sm:leading-normal max-w-[225px] sm:max-w-85 mt-3 sm:mt-8 will-change-transform"
           >
             A personal recovery experience with considered practices, quiet structure and room to do
             very little.
@@ -220,7 +233,7 @@ export default function ExperienceHeroJourney() {
            ======================================================== */}
         <div
           ref={journeySectionRef}
-          className="relative z-10 pt-36 sm:pt-48 lg:pt-60 pb-2"
+          className="relative z-10 pt-[52vh] sm:pt-48 lg:pt-60 pb-2"
         >
           {/* Eyebrow Label */}
           <span
@@ -233,7 +246,7 @@ export default function ExperienceHeroJourney() {
           {/* Journey Headline */}
           <h2
             ref={journeyHeadlineRef}
-            className="font-sans  text-3xl sm:text-4xl lg:text-[2.85rem] text-[#C47B3F] font-normal tracking-[-0.035em] leading-[1.14] max-w-2xl mb-8 sm:mb-12 will-change-transform"
+            className="font-sans text-2xl sm:text-4xl lg:text-[2.85rem] text-[#9A5B27] md:text-[#C47B3F] font-normal tracking-[-0.035em] leading-[1.18] sm:leading-[1.14] max-w-2xl mb-8 sm:mb-12 will-change-transform"
           >
             A considered experience, from <br className="hidden sm:inline" />
             arrival to return.
@@ -250,12 +263,12 @@ export default function ExperienceHeroJourney() {
                 className="space-y-2 sm:space-y-3 will-change-transform"
               >
                 {/* Step Title in Refined Serif */}
-                <h3 className="font-serif-luxury text-base sm:text-lg lg:text-2xl text-[#00000] font-medium tracking-normal">
+                <h3 className="font-serif-luxury text-lg sm:text-lg lg:text-2xl text-[#1E2E23] font-medium tracking-normal">
                   {step.title}
                 </h3>
 
                 {/* Step Narrative */}
-                <p className="text-[11px] sm:text-xs lg lg:text-sm text-[#00000] leading-relaxed font-normal">
+                <p className="text-[12.5px] sm:text-xs lg:text-sm text-[#4E5647] leading-relaxed font-normal">
                   {step.description}
                 </p>
               </div>

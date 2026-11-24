@@ -175,10 +175,10 @@ export default function ProfilesSection() {
         ref={innerPinRef}
         className="w-full relative lg:h-screen lg:flex lg:items-center bg-[#FAF9F5] lg:overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:max-w-none lg:mx-0 lg:px-0 lg:w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:max-w-none lg:mx-0 lg:px-0 lg:w-full">
           <div
             ref={trackRef}
-            className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-14 sm:gap-x-12 lg:flex lg:flex-nowrap lg:w-max lg:gap-0 lg:pl-[8vw] lg:pr-[8vw] will-change-transform"
+            className="grid grid-cols-2 gap-x-4 sm:gap-x-8 md:gap-x-12 gap-y-10 sm:gap-y-14 lg:flex lg:flex-nowrap lg:w-max lg:gap-0 lg:pl-[8vw] lg:pr-[8vw] will-change-transform"
           >
             {PROFILES.map((profile, index) => (
               <div
@@ -192,7 +192,7 @@ export default function ProfilesSection() {
                   ref={(el) => {
                     iconRefs.current[index] = el;
                   }}
-                  className="relative w-44 h-28 sm:h-32 lg:w-56 lg:h-40 mb-4 sm:mb-5 flex items-center justify-center pointer-events-none will-change-transform"
+                  className="relative w-28 h-20 sm:w-36 sm:h-28 md:w-44 md:h-32 lg:w-56 lg:h-40 mb-3 sm:mb-4 lg:mb-5 flex items-center justify-center pointer-events-none will-change-transform"
                 >
                   <div className="relative w-full h-full transform transition-transform duration-500 ease-out group-hover:scale-105">
                     <Image
@@ -205,11 +205,11 @@ export default function ProfilesSection() {
                   </div>
                 </div>
 
-                <h3 className="font-serif-luxury text-xl sm:text-[1.38rem] text-[#2F3123] font-normal leading-[1.24] mb-3 group-hover:text-[#8C6548] transition-colors">
+                <h3 className="font-serif-luxury text-[14px] sm:text-lg md:text-[1.38rem] text-[#2F3123] font-normal leading-snug sm:leading-[1.24] mb-2 sm:mb-3 group-hover:text-[#8C6548] transition-colors">
                   {profile.title}
                 </h3>
 
-                <p className="text-xs sm:text-[13px] text-[#5C5E50] leading-relaxed max-w-xs mx-auto font-normal">
+                <p className="text-[11px] sm:text-xs md:text-[13px] text-[#5C5E50] leading-relaxed max-w-xs mx-auto font-normal">
                   {profile.description}
                 </p>
               </div>
