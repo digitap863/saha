@@ -6,6 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Prevent ScrollTrigger from recalculating and jumping when mobile address bar shows/hides
+if (typeof window !== "undefined") {
+  ScrollTrigger.config({
+    ignoreMobileResize: true,
+  });
+}
+
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export default function Hero() {
@@ -179,30 +186,31 @@ export default function Hero() {
     mm.add("(max-width: 767px)", () => {
       if (textContentRef.current) {
         gsap.to(textContentRef.current, {
-          y: -40,
-          opacity: 0.3,
+          y: -30,
+          opacity: 0.35,
           ease: "none",
           scrollTrigger: {
             trigger: heroRef.current,
             start: "top top",
             end: "bottom 30%",
-            scrub: 1,
+            scrub: true,
+            invalidateOnRefresh: true,
           },
         });
       }
 
       if (mobileContainerRef.current) {
         gsap.to(mobileContainerRef.current, {
-          scale: 0.92,
-          y: 20,
-          opacity: 0.6,
+          scale: 0.94,
+          opacity: 0.65,
           transformOrigin: "100% 100%",
           ease: "none",
           scrollTrigger: {
             trigger: heroRef.current,
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true,
+            invalidateOnRefresh: true,
           },
         });
       }
@@ -222,11 +230,11 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative w-full bg-white min-h-[100dvh]"
+      className="relative w-full bg-white min-h-[100svh] md:min-h-[100dvh]"
     >
       <div
         ref={innerPinRef}
-        className="w-full min-h-[100dvh] h-[100dvh] relative overflow-hidden flex items-start md:items-center pt-20 sm:pt-24 md:pt-0"
+        className="w-full min-h-[100svh] h-[100svh] md:min-h-[100dvh] md:h-[100dvh] relative overflow-hidden flex items-start md:items-center pt-20 sm:pt-24 md:pt-0"
       >
         {/* Left Content Container */}
       <div
@@ -310,7 +318,7 @@ export default function Hero() {
           ref={mobileImageRef}
           src="/678.webp"
           alt="Sahā - Golden Rim-Lit Silhouette"
-          className="w-auto h-[48vh] sm:h-[52vh] max-h-[420px] max-w-none block select-none will-change-transform"
+          className="w-auto h-[48svh] sm:h-[52svh] max-h-[420px] max-w-none block select-none will-change-transform"
           style={{ transformOrigin: "100% 100%" }}
         />
       </div>

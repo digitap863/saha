@@ -159,7 +159,7 @@ export default function ExperienceHeroJourney() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-[#EDE8E1] min-h-[960px] md:min-h-250 lg:min-h-350 flex flex-col justify-between pt-20 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 isolate"
+      className="relative w-full overflow-hidden bg-[#EDE8E1] min-h-240 md:min-h-250 lg:min-h-350 flex flex-col justify-between pt-20 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 isolate"
     >
       {/* Full Screen Width Background Image (experience.webp / experience_mob.png) - anchored at the top */}
       <div
@@ -186,7 +186,7 @@ export default function ExperienceHeroJourney() {
         />
 
         {/* Mobile-only soft gradient scrim: keeps the top woman's face clear while ensuring the lower journey text is 100% readable */}
-        <div className="block md:hidden absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-40% to-[#EDE8E1] via-68% pointer-events-none" />
+        <div className="block md:hidden absolute inset-0 bg-linear-to-b from-transparent via-transparent via-40% to-[#EDE8E1] pointer-events-none" />
       </div>
 
       {/* Inner Container: Aligns typography and content with page grid */}
@@ -221,7 +221,7 @@ export default function ExperienceHeroJourney() {
           {/* Subtitle Description: constrained to max-w-[225px] on mobile to stay clear of the woman's face */}
           <p
             ref={topSubtitleRef}
-            className="font-playfair font-normal text-[#1C3A2B] text-[13.5px] sm:text-[17px] leading-relaxed sm:leading-normal max-w-[225px] sm:max-w-85 mt-3 sm:mt-8 will-change-transform"
+            className="font-playfair font-normal text-[#1C3A2B] text-[13.5px] sm:text-[17px] leading-relaxed sm:leading-normal max-w-56.25 sm:max-w-85 mt-3 sm:mt-8 will-change-transform"
           >
             A personal recovery experience with considered practices, quiet structure and room to do
             very little.
